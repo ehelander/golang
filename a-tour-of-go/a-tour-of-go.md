@@ -1,6 +1,5 @@
 # [A Tour of Go](https://tour.golang.org/welcome/1)
 
-- [Wikipedia: Go (programming language)](https://en.wikipedia.org/wiki/Go_(programming_language))
 - [gofmt](https://golang.org/cmd/gofmt/) format tool
 - [install Go](https://golang.org/doc/install)
   - [https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-macos](https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-macos)
@@ -240,3 +239,140 @@
       - To skip either the range or the value, assign it to `_`.
       - If only the index is desired, omit the value variable.
 - [Exercise: Slices](https://tour.golang.org/moretypes/18)
+
+  ```go
+  package main
+
+  import "golang.org/x/tour/pic"
+
+  func Pic(dx, dy int) [][]uint8 {
+    imageData := make([][]uint8, dy)
+    for y := range imageData {
+      imageData[y] = make([]uint8, dx)
+      for x := range imageData[y] {
+        // Diagonal gradient:
+        // imageData[y][x] = uint8((x + y)/2)
+        // Recursive checkerboard-like pattern:
+        imageData[y][x] = uint8(x^y)
+      }
+    }
+    return imageData
+  }
+
+  func main() {
+    pic.Show(Pic)
+  }
+  ```
+
+- [Maps](https://tour.golang.org/moretypes/19)
+  - Maps map keys to values.
+  - Zero value: `nil`.
+    - No keys; no keys can be added.
+  - `make()`  returns an initialized map of the specified type.
+    - Example:
+
+      ```go
+      package main
+
+      import "fmt"
+
+      type Vertex struct {
+        Lat, Long float64
+      }
+
+      var m map[string]Vertex
+
+      func main() {
+        m = make(map[string]Vertex)
+        m["Some Location"] = Vertex{
+          40.68433, -74.39967,
+        }
+        fmt.Println(m["Some Location"])
+      }
+      ```
+
+- [Map literals](https://tour.golang.org/moretypes/20), [continued](https://tour.golang.org/moretypes/21)
+  - Keys are required.
+
+    ```go
+    var m = map[string]Vertex{
+      "Some Location": Vertex{
+        40.68433, -74.39967,
+      },
+    }
+    // Can omit the type from the elements (if the top-level type is just a type name)
+    var m2 = map[string]Vertex{
+      "Some Location": {40.68433, -74.39967},
+    }
+    ```
+
+- [Mutating maps](https://tour.golang.org/moretypes/22)
+  - Insert or update element `key` in map `m` to value `v`
+    - `m[key] = v`
+  - Get element `key` from map `m`, assigning it to `elem`:
+    - `elem = m[key]`
+  - Delete element `key` from map `m`:
+    - `delete(m, key)`
+  - Check whether `key` exists in `m`:
+    - `elem, ok = m[key]` (or `elem, ok := m[key]`, if `elem` and `ok` haven't been declared)
+      - If `key` is in `m`:
+        - `ok` is `true`
+      - If `key` is not in `m`:
+        - `ok` is `false`
+        - `elem` is zero value
+- [Exercise: Maps](https://tour.golang.org/moretypes/23)
+
+  ```go
+  package main
+
+  import (
+    "golang.org/x/tour/wc";
+    "strings";
+  )
+
+  func WordCount(s string) map[string]int {
+    words := strings.Fields(s)
+    wordCount := make(map[string]int)
+    for i := range words {
+      word := words[i]
+      count := wordCount[words[i]]
+      wordCount[word] = count + 1
+    }
+    return wordCount
+  }
+
+  func main() {
+    wc.Test(WordCount)
+  }
+  ```
+
+- [Function values](https://tour.golang.org/moretypes/24)
+  - Functions are values.
+  - Functions can be used as function arguments and return values.
+- [Function closures](https://tour.golang.org/moretypes/25)
+  - Functions may be closures.
+- [Exercise: Fibonacci closure](https://tour.golang.org/moretypes/26)
+
+  ```go
+  package main
+
+  import "fmt"
+
+  // fibonacci is a function that returns
+  // a function that returns an int.
+  func fibonacci() func() int {
+    current, next := 0, 1
+    return func() int {
+      returnValue := current
+      current, next = next, current + next
+      return returnValue
+    }
+  }
+
+  func main() {
+    f := fibonacci()
+    for i := 0; i < 10; i++ {
+      fmt.Println(f())
+    }
+  }
+  ```
