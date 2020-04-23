@@ -1,12 +1,8 @@
 # [A Tour of Go](https://tour.golang.org/welcome/1)
 
-- [gofmt](https://golang.org/cmd/gofmt/) format tool
-- [install Go](https://golang.org/doc/install)
-  - [https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-macos](https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-macos)
-    - `brew install golang`
-    - `go get golang.org/x/tour`
-
 ## Basics
+
+### Packages
 
 - [Packages](https://tour.golang.org/basics/1)
   - Every program is made up of packages.
@@ -18,7 +14,7 @@
 
     ```go
     import (
-        "fmt",
+        "fmt"
         "math"
     )
     ```
@@ -28,6 +24,9 @@
 - [Exported names](https://tour.golang.org/basics/3)
   - A name is exported if it begins with a capital letter.
     - Unexported names are not accessible outside the package.
+
+### Functions
+
 - [Functions](https://tour.golang.org/basics/4), [continued](https://tour.golang.org/basics/5)
   - Data types follow the variable name.
   - The type can be omitted from all but the last variable in a sequence of parameters that share a type.
@@ -36,6 +35,9 @@
 - [Named return values](https://tour.golang.org/basics/7)
   - Naked return: Variables are defined at the top of the function and are returned with a naked `return` keyword.
     - Should only be used for short functions (to not hurt readability).
+
+### Variables
+
 - [Variables](https://tour.golang.org/basics/8)
   - `var` declares a list of variables.
   - Type follows the variable name.
@@ -45,6 +47,9 @@
   - If present, the type can be omitted; the variable will take the type of the initializer.
 - [Short variable declarations](https://tour.golang.org/basics/10)
   - Inside a function, the `:=` operator can be used to declare a variable and assign it an initial value.
+
+### Types
+
 - [Basic types](https://tour.golang.org/basics/11)
   - Go's basic types
     - `bool`
@@ -96,6 +101,8 @@
 
 ## Flow Control
 
+### For
+
 - [For](https://tour.golang.org/flowcontrol/1), [continued](https://tour.golang.org/flowcontrol/2)
   - `for` is the only looping construct in Go.
   - Basic syntax: `for i := 0; i < 10; i++ {}`
@@ -111,12 +118,16 @@
   - Note: No parentheses; but braces required.
 - [Forever](https://tour.golang.org/flowcontrol/4)
   - An empty `for` is an infinite loop.
+
+### If
+
 - [If](https://tour.golang.org/flowcontrol/5)
   - Similar to `for` in that no parentheses, but required braces.
 - [If with a short statement](https://tour.golang.org/flowcontrol/6), [If and else if](https://tour.golang.org/flowcontrol/7)
   - `if` can being with a short statement to execute before the condition.
     - Variables declared in the statement are only scoped to the `if` or its `else`s.
-- [Exercise: Loops and Functions](https://tour.golang.org/flowcontrol/8)
+
+### [Exercise: Loops and Functions](https://tour.golang.org/flowcontrol/8)
 
   ```go
   package main
@@ -160,6 +171,8 @@
   }
   ```
 
+### Switch
+
 - [Switch](https://tour.golang.org/flowcontrol/9), [Switch evaluation order](https://tour.golang.org/flowcontrol/10)
   - Go's `switch` only runs the selected, not those that follow.
     - No `break` statement is needed.
@@ -167,12 +180,17 @@
   - Cases are evaluated from top to bottom.
 - [Switch with no condition](https://tour.golang.org/flowcontrol/11)
   - A `switch` with no condition is equivalent to `switch true`.
+
+### Defer
+
 - [Defer](https://tour.golang.org/flowcontrol/12)
   - A `defer` statement delays the execution of a function until its surrounding function returns.
 - [Stacking defers](https://tour.golang.org/flowcontrol/13)
   - Deferred functions are pushed onto a stack, evaluated in LIFO order.
 
 ## More Types
+
+### Pointers
 
 - [Pointers](https://tour.golang.org/moretypes/1)
   - Go has pointers (which hold the memory address of a value).
@@ -182,6 +200,9 @@
     - The `*` operator denotes the pointer's underlying value.
       - Known as *dereferencing* or *indirecting*.
   - Go has no pointer arithmetic.
+
+### Structs
+
 - [Structs](https://tour.golang.org/moretypes/2)
   - A `struct` is a collection of fields.
 - [Struct fields](https://tour.golang.org/moretypes/3)
@@ -194,9 +215,15 @@
   - A struct can be created as a struct literal, supplying values for its fields.
     - `var v1 = Vertex{1, 2}` &rarr; v1 has type Vertex
     - `var v2 = Vertex{X: 1}` &rarr; Y:0 is implicit
+
+### Arrays
+
 - [Arrays](https://tour.golang.org/moretypes/6)
   - Arrays cannot be resized: The array's length is part of its type.
   - An array of `n` values of type `T` is of type `[n]T`.
+
+### Slices
+
 - [Slices](https://tour.golang.org/moretypes/7)
   - A slice is a dynamically-sized, flexible view into an array's elements.
   - Type `[]T` is a slice with elements of type `T`.
@@ -232,13 +259,17 @@
   - `append` appends new elements to a slice.
     - `func append(s []T, vs ...T) []T`
     - If the backing array is too small to fit the provided values, a new array will be allocated. The returned slice will point to this new array.
+
+### Range
+
 - [Range](https://tour.golang.org/moretypes/16), [continued](https://tour.golang.org/moretypes/17)
   - The `range` form of `for` loop iterates over a slice/map.
     - Each iteration returns 2 values: index, copy of the element at that index.
     - `for i, v := range someSlice {}`
       - To skip either the range or the value, assign it to `_`.
       - If only the index is desired, omit the value variable.
-- [Exercise: Slices](https://tour.golang.org/moretypes/18)
+
+### [Exercise: Slices](https://tour.golang.org/moretypes/18)
 
   ```go
   package main
@@ -263,6 +294,8 @@
     pic.Show(Pic)
   }
   ```
+
+### Maps
 
 - [Maps](https://tour.golang.org/moretypes/19)
   - Maps map keys to values.
@@ -320,7 +353,8 @@
       - If `key` is not in `m`:
         - `ok` is `false`
         - `elem` is zero value
-- [Exercise: Maps](https://tour.golang.org/moretypes/23)
+
+### [Exercise: Maps](https://tour.golang.org/moretypes/23)
 
   ```go
   package main
@@ -346,12 +380,15 @@
   }
   ```
 
+### Functions
+
 - [Function values](https://tour.golang.org/moretypes/24)
   - Functions are values.
   - Functions can be used as function arguments and return values.
 - [Function closures](https://tour.golang.org/moretypes/25)
   - Functions may be closures.
-- [Exercise: Fibonacci closure](https://tour.golang.org/moretypes/26)
+
+### [Exercise: Fibonacci closure](https://tour.golang.org/moretypes/26)
 
   ```go
   package main
